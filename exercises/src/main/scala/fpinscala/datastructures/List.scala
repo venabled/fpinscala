@@ -104,6 +104,30 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def appendViaFold[A](a1: List[A], a2: List[A]): List[A] =
     foldRight(a1, a2)(Cons(_,_))
-  
-  def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
+
+  def cat[A](lol: List[List[A]]): List[A] =
+    foldRight(lol, Nil:List[A])((l1, ls) => append(l1, ls))
+
+  def addOne(l: List[Int]): List[Int] =
+    foldRight(l, Nil:List[Int])((h,ls) => Cons(h + 1, ls))
+
+  def mapToString(l: List[Double]): List[String] =
+    foldRight(l, Nil:List[String])((h,t) => Cons(h.toString(), t))
+
+  def map[A,B](l: List[A])(f: A => B): List[B] =
+    foldRight(l, Nil:List[B])((h, t) => Cons(f(h), t))
+
+  def filter[A](as: List[A])(f: A => Boolean): List[A] =
+    foldRight(as, Nil:List[A])((h, t) => if (f(h)) Cons(h,t) else t)
+
+  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] =
+    foldRight(as, Nil:List[B])((h, t) => append(f(h), t))
+
+  def filterViaFlatMap[A](as: List[A])(f: A => Boolean): List[A] =
+    flatMap(as)(a => if( f(a) ) List(a) else Nil)
+
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+
+  }
+
 }
